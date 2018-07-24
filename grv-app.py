@@ -1,3 +1,5 @@
+#/home/ubuntu/grv-app-deploy
+#/home/ubuntu/grv-app-deploy/py36/bin/python
 # imports
 from flask import Flask, render_template, request
 import numpy as np
@@ -179,4 +181,5 @@ def slider():
 if __name__ == '__main__':
     #app.run(port=5002, debug=True)
     # Testing new app.run()
-    app.run(host="0.0.0.0", port=8000, debug=False)
+    #app.run(host="0.0.0.0", port=8000, debug=False)
+    app.run()
