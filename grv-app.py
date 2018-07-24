@@ -1,5 +1,3 @@
-#/home/ubuntu/grv-app-deploy
-#/home/ubuntu/grv-app-deploy/py36/bin/python
 # imports
 from flask import Flask, render_template, request
 import numpy as np
