@@ -52,7 +52,6 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
     html path='/var/www/html/grv-app-deploy'
     `$ vim app.wsgi`
 24. Paste this code into the wsgi file:
-    -------BEGIN-------
     ```python
     activate_this = '/home/ubuntu/grv-app-deploy/py36/bin/activate_this.py'
     with open(activate_this) as f:
@@ -66,7 +65,6 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
 
     from grvapp import app as application
     ```
-    -------END-------
 25. Create a symlink so that the project directory appears in /var/www/html
     `$ sudo ln -sT ~/grv-app-deploy /var/www/html/grv-app-deploy`
 26. Enable wsgi.
@@ -74,7 +72,6 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
 27. Configure apache (you will need to sudo to edit the file)
     `$ sudo vi /etc/apache2/sites-enabled/000-default.conf`
 28. Paste this in right after the line with DocumentRoot /var/www/html
-    ------BEGIN-------
     ```python
     WSGIDaemonProcess grv-app-deploy threads=5
     WSGIScriptAlias / /var/www/html/grv-app-deploy/app.wsgi
@@ -86,16 +83,18 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
         Allow from all
     </Directory>
     ```
-    -------END-------
 29. Restart the Server:
     `$ sudo apachectl restart`
 30. check the IPv4 Public IP at e.g. `54.84.76.221`
     => returns `Internal Server Error`
 31. check the logs at: `vim /var/log/apache2/error.log`
+
     => [wsgi:error] [pid 5719:tid 139903778035456] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
     [apparently this can be ignored](http://bit.ly/2LIOSUP)
+
     Stack trace:
-    -----BEGIN-----
+
+    ```
     [Wed Jul 25 07:11:34.348826 2018] [mpm_event:notice] [pid 1283:tid 139903880587136] AH00494: SIGHUP received.  Attempting to restart
     [Wed Jul 25 07:11:34.401663 2018] [mpm_event:notice] [pid 1283:tid 139903880587136] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.6.4 Python/3.6 configured -- resuming normal operations
     [Wed Jul 25 07:11:34.401681 2018] [core:notice] [pid 1283:tid 139903880587136] AH00094: Command line: '/usr/sbin/apache2'
@@ -131,4 +130,4 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
     [Wed Jul 25 07:11:38.606274 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]   File "pandas/_libs/parsers.pyx", line 695, in pandas._libs.parsers.TextReader._setup_parser_source
     [Wed Jul 25 07:11:38.606278 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834] FileNotFoundError: File b'static/Volumes' does not exist
     [Wed Jul 25 07:11:38.606284 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]
-    -----END-----
+    ```
