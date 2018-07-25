@@ -53,6 +53,7 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
     `$ vim app.wsgi`
 24. Paste this code into the wsgi file:
     -------BEGIN-------
+    ```python
     activate_this = '/home/ubuntu/grv-app-deploy/py36/bin/activate_this.py'
     with open(activate_this) as f:
 	    exec(f.read(), dict(__file__=activate_this))
@@ -64,6 +65,7 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
     sys.path.insert(0,"/var/www/html/grv-app-deploy/")
 
     from grvapp import app as application
+    ```
     -------END-------
 25. Create a symlink so that the project directory appears in /var/www/html
     `$ sudo ln -sT ~/grv-app-deploy /var/www/html/grv-app-deploy`
@@ -73,6 +75,7 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
     `$ sudo vi /etc/apache2/sites-enabled/000-default.conf`
 28. Paste this in right after the line with DocumentRoot /var/www/html
     ------BEGIN-------
+    ```python
     WSGIDaemonProcess grv-app-deploy threads=5
     WSGIScriptAlias / /var/www/html/grv-app-deploy/app.wsgi
 
@@ -82,6 +85,7 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
         Order deny,allow
         Allow from all
     </Directory>
+    ```
     -------END-------
 29. Restart the Server:
     `$ sudo apachectl restart`
