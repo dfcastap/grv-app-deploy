@@ -106,8 +106,8 @@ def home():
 def altair():
     ### GRAHAM
     # Read in the pickles 
-    mid_unit = np.load('static/mid_unit.npy')
-    all_surfaces = np.load('static/realisation_1_10.npy')
+    mid_unit = np.load('/var/www/html/grv-app-deploy/static/mid_unit.npy')
+    all_surfaces = np.load('/var/www/html/grv-app-deploy/static/realisation_1_10.npy')
     
     # Pick one scenario
     nb = 3
@@ -140,8 +140,8 @@ def altair():
 @app.route('/entropy')
 def entropy():
     # Read in the pickles 
-    entropy = np.load('static/entropy_20180610.npy')
-    all_surfaces = np.load('static/realisation_1_10.npy')
+    entropy = np.load('/var/www/html/grv-app-deploy/static/entropy_20180610.npy')
+    all_surfaces = np.load('/var/www/html/grv-app-deploy/static/realisation_1_10.npy')
     
     # Pick one scenario
     nb = 3
