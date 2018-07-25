@@ -171,12 +171,12 @@ def entropy():
 
     return render_template('entropy.html', entropy1plot = entropy1plot, entropy2plot = entropy2plot)
 
-@app.route('/slider', methods = ['GET'])
-def slider():
-    if request.method == 'GET':
-        slider_value = request.args.get('arg1')
-        print('slider_value', slider_value)
-        return slider_value
+# @app.route('/slider', methods = ['GET'])
+# def slider():
+#     if request.method == 'GET':
+#         slider_value = request.args.get('arg1')
+#         print('slider_value', slider_value)
+#         return slider_value
 
 # run
 if __name__ == '__main__':
