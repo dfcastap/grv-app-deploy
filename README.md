@@ -185,5 +185,6 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
     and:
     `$ git lfs install`
 35. then `$ git lfs pull` to download large files.
-36. use `$ sudo bash -c 'echo > /var/log/apache2/error.log'` to clean error log and `$ sudo apachectl restart` to restart the server
+36. This worked, but now the page "didn't send any data", perhaps due to large file size
+37. use `$ sudo bash -c 'echo > /var/log/apache2/error.log'` to clean error log and `$ sudo apachectl restart` to restart the server
 
