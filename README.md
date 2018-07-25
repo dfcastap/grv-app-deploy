@@ -89,3 +89,42 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
     => returns `Internal Server Error`
 31. check the logs at: `vim /var/log/apache2/error.log`
     => [wsgi:error] [pid 5719:tid 139903778035456] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+    [apparently this can be ignored](http://bit.ly/2LIOSUP)
+    Stack trace:
+    -----BEGIN-----
+    [Wed Jul 25 07:11:34.348826 2018] [mpm_event:notice] [pid 1283:tid 139903880587136] AH00494: SIGHUP received.  Attempting to restart
+    [Wed Jul 25 07:11:34.401663 2018] [mpm_event:notice] [pid 1283:tid 139903880587136] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.6.4 Python/3.6 configured -- resuming normal operations
+    [Wed Jul 25 07:11:34.401681 2018] [core:notice] [pid 1283:tid 139903880587136] AH00094: Command line: '/usr/sbin/apache2'
+    [Wed Jul 25 07:11:38.038388 2018] [wsgi:error] [pid 5719:tid 139903778035456] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+    [Wed Jul 25 07:11:38.038419 2018] [wsgi:error] [pid 5719:tid 139903778035456]   return f(*args, **kwds)
+    [Wed Jul 25 07:11:38.606178 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834] ERROR:flask.app:Exception on / [GET]
+    [Wed Jul 25 07:11:38.606198 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834] Traceback (most recent call last):
+    [Wed Jul 25 07:11:38.606203 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/flask/app.py", line 2292, in wsgi_app
+    [Wed Jul 25 07:11:38.606208 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]     response = self.full_dispatch_request()
+    [Wed Jul 25 07:11:38.606211 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    [Wed Jul 25 07:11:38.606213 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]     rv = self.handle_user_exception(e)
+    [Wed Jul 25 07:11:38.606216 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/flask/app.py", line 1718, in handle_user_exception
+    [Wed Jul 25 07:11:38.606218 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]     reraise(exc_type, exc_value, tb)
+    [Wed Jul 25 07:11:38.606221 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/flask/_compat.py", line 35, in reraise
+    [Wed Jul 25 07:11:38.606223 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]     raise value
+    [Wed Jul 25 07:11:38.606226 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    [Wed Jul 25 07:11:38.606228 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]     rv = self.dispatch_request()
+    [Wed Jul 25 07:11:38.606230 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/flask/app.py", line 1799, in dispatch_request
+    [Wed Jul 25 07:11:38.606234 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]     return self.view_functions[rule.endpoint](**req.view_args)
+    [Wed Jul 25 07:11:38.606236 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]   File "/var/www/html/grv-app-deploy/grvapp.py", line 22, in home
+    [Wed Jul 25 07:11:38.606238 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]     vol = pd.read_csv(volume_file, delim_whitespace=True)
+    [Wed Jul 25 07:11:38.606240 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/pandas/io/parsers.py", line 678, in parser_f
+    [Wed Jul 25 07:11:38.606243 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]     return _read(filepath_or_buffer, kwds)
+    [Wed Jul 25 07:11:38.606245 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/pandas/io/parsers.py", line 440, in _read
+    [Wed Jul 25 07:11:38.606255 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]     parser = TextFileReader(filepath_or_buffer, **kwds)
+    [Wed Jul 25 07:11:38.606258 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/pandas/io/parsers.py", line 787, in __init__
+    [Wed Jul 25 07:11:38.606260 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]     self._make_engine(self.engine)
+    [Wed Jul 25 07:11:38.606262 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/pandas/io/parsers.py", line 1014, in _make_engine
+    [Wed Jul 25 07:11:38.606264 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]     self._engine = CParserWrapper(self.f, **self.options)
+    [Wed Jul 25 07:11:38.606266 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/pandas/io/parsers.py", line 1708, in __init__
+    [Wed Jul 25 07:11:38.606269 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]     self._reader = parsers.TextReader(src, **kwds)
+    [Wed Jul 25 07:11:38.606272 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]   File "pandas/_libs/parsers.pyx", line 384, in pandas._libs.parsers.TextReader.__cinit__
+    [Wed Jul 25 07:11:38.606274 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]   File "pandas/_libs/parsers.pyx", line 695, in pandas._libs.parsers.TextReader._setup_parser_source
+    [Wed Jul 25 07:11:38.606278 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834] FileNotFoundError: File b'static/Volumes' does not exist
+    [Wed Jul 25 07:11:38.606284 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]
+    -----END-----
