@@ -187,4 +187,5 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
 35. then `$ git lfs pull` to download large files.
 36. This worked, but now the page "didn't send any data", perhaps due to large file size
 37. use `$ sudo bash -c 'echo > /var/log/apache2/error.log'` to clean error log and `$ sudo apachectl restart` to restart the server
-
+38. While the cause of the 'page didn't send any data' is not clear, Diego Castañeda suggested [mounting the S3 bucket onto the EC2 instance](http://bit.ly/2NIVgMl)
+39. 
