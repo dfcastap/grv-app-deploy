@@ -18,7 +18,7 @@ def home():
 
     ### BEHROOZ
     # read volume file and assign to vol data frame
-    volume_file = ('static/Volumes')
+    volume_file = ('static/Volumes.txt')
     vol = pd.read_csv(volume_file, delim_whitespace=True)
 
     # GRVQHC
