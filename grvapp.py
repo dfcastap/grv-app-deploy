@@ -21,7 +21,7 @@ def home():
     #volume_file = ('static/Volumes')
     #vol = pd.read_csv(volume_file, delim_whitespace=True)
     # update volume file with commas
-    volume_file = ('./static/Volumes_comma.csv')
+    volume_file = ('static/Volumes_comma.csv')
     vol = pd.read_csv(volume_file, delimiter=',')
 
     # GRVQHC
