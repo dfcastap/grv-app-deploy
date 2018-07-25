@@ -132,7 +132,7 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
     [Wed Jul 25 07:11:38.606284 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]
     ```
 32. to Fix this error, ensure the absolute path on the server is used: `/var/www/html/grv-app-deploy/static`
-33. New error:
+33. New error on `/altair` and `/entropy`:
 
     Stack trace:
 
