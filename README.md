@@ -132,4 +132,48 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
     [Wed Jul 25 07:11:38.606284 2018] [wsgi:error] [pid 5719:tid 139903778035456] [client 185.50.221.158:44834]
     ```
 32. to Fix this error, ensure the absolute path on the server is used: `/var/www/html/grv-app-deploy/static`
-33. 
+33. New error:
+
+    Stack trace:
+
+    ```
+    [Wed Jul 25 09:03:44.155676 2018] [mpm_event:notice] [pid 1283:tid 139903880587136] AH00494: SIGHUP received.  Attempting to restart
+[Wed Jul 25 09:03:44.208533 2018] [mpm_event:notice] [pid 1283:tid 139903880587136] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.6.4 Python/3.6 configured -- resuming normal operations
+[Wed Jul 25 09:03:44.208555 2018] [core:notice] [pid 1283:tid 139903880587136] AH00094: Command line: '/usr/sbin/apache2'
+[Wed Jul 25 09:03:52.476335 2018] [wsgi:error] [pid 8110:tid 139903778035456] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+[Wed Jul 25 09:03:52.476368 2018] [wsgi:error] [pid 8110:tid 139903778035456]   return f(*args, **kwds)
+[Wed Jul 25 09:03:54.629228 2018] [wsgi:error] [pid 8109:tid 139903778035456] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+[Wed Jul 25 09:03:54.629260 2018] [wsgi:error] [pid 8109:tid 139903778035456]   return f(*args, **kwds)
+[Wed Jul 25 09:03:55.211838 2018] [wsgi:error] [pid 8109:tid 139903778035456] [client 185.50.221.158:52480] slider_value 0, referer: http://54.84.76.221/
+[Wed Jul 25 09:03:55.334194 2018] [wsgi:error] [pid 8109:tid 139903635539712] [client 185.50.221.158:52480] slider_value 0, referer: http://54.84.76.221/
+[Wed Jul 25 09:03:55.457276 2018] [wsgi:error] [pid 8110:tid 139903769642752] [client 185.50.221.158:52483] slider_value 0, referer: http://54.84.76.221/
+[Wed Jul 25 09:03:55.578340 2018] [wsgi:error] [pid 8110:tid 139903761250048] [client 185.50.221.158:52483] slider_value 0, referer: http://54.84.76.221/
+[Wed Jul 25 09:03:55.697555 2018] [wsgi:error] [pid 8110:tid 139903752857344] [client 185.50.221.158:52483] slider_value 0, referer: http://54.84.76.221/
+[Wed Jul 25 09:03:56.929696 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483] ERROR:flask.app:Exception on /altair [GET]
+[Wed Jul 25 09:03:56.929727 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483] Traceback (most recent call last):
+[Wed Jul 25 09:03:56.929731 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/numpy/lib/npyio.py", line 440, in load
+[Wed Jul 25 09:03:56.929734 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]     return pickle.load(fid, **pickle_kwargs)
+[Wed Jul 25 09:03:56.929737 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483] _pickle.UnpicklingError: invalid load key, 'v'.
+[Wed Jul 25 09:03:56.929740 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]
+[Wed Jul 25 09:03:56.929743 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483] During handling of the above exception, another exception occurred:
+[Wed Jul 25 09:03:56.929745 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]
+[Wed Jul 25 09:03:56.929759 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483] Traceback (most recent call last):
+[Wed Jul 25 09:03:56.929762 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/flask/app.py", line 2292, in wsgi_app
+[Wed Jul 25 09:03:56.929765 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]     response = self.full_dispatch_request()
+[Wed Jul 25 09:03:56.929767 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/flask/app.py", line 1815, in full_dispatch_request
+[Wed Jul 25 09:03:56.929770 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]     rv = self.handle_user_exception(e)
+[Wed Jul 25 09:03:56.929772 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/flask/app.py", line 1718, in handle_user_exception
+[Wed Jul 25 09:03:56.929783 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]     reraise(exc_type, exc_value, tb)
+[Wed Jul 25 09:03:56.929786 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/flask/_compat.py", line 35, in reraise
+[Wed Jul 25 09:03:56.929795 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]     raise value
+[Wed Jul 25 09:03:56.929798 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/flask/app.py", line 1813, in full_dispatch_request
+[Wed Jul 25 09:03:56.929800 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]     rv = self.dispatch_request()
+[Wed Jul 25 09:03:56.929803 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/flask/app.py", line 1799, in dispatch_request
+[Wed Jul 25 09:03:56.929805 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]     return self.view_functions[rule.endpoint](**req.view_args)
+[Wed Jul 25 09:03:56.929807 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]   File "/var/www/html/grv-app-deploy/grvapp.py", line 109, in altair
+[Wed Jul 25 09:03:56.929810 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]     mid_unit = np.load('/var/www/html/grv-app-deploy/static/mid_unit.npy')
+[Wed Jul 25 09:03:56.929812 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]   File "/home/ubuntu/grv-app-deploy/py36/lib/python3.6/site-packages/numpy/lib/npyio.py", line 443, in load
+[Wed Jul 25 09:03:56.929815 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]     "Failed to interpret file %s as a pickle" % repr(file))
+[Wed Jul 25 09:03:56.929819 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483] OSError: Failed to interpret file '/var/www/html/grv-app-deploy/static/mid_unit.npy' as a pickle
+[Wed Jul 25 09:03:56.929825 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]
+```
