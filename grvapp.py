@@ -18,8 +18,11 @@ def home():
 
     ### BEHROOZ
     # read volume file and assign to vol data frame
-    volume_file = ('static/Volumes')
-    vol = pd.read_csv(volume_file, delim_whitespace=True)
+    #volume_file = ('static/Volumes')
+    #vol = pd.read_csv(volume_file, delim_whitespace=True)
+    # update volume file with commas
+    volume_file = ('static/Volumes_comma.csv')
+    vol = pd.read_csv(volume_file, delimiter=',')
 
     # GRVQHC
     # For GRV vs GRV quantiles by HC Column charts
@@ -177,7 +180,7 @@ def slider():
 
 # run
 if __name__ == '__main__':
-    #app.run(port=5002, debug=True)
+    app.run(port=5002, debug=True)
     # Testing new app.run()
     #app.run(host="0.0.0.0", port=8000, debug=False)
-    app.run()
+    #app.run()
