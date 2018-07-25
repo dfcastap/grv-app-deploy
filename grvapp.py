@@ -106,7 +106,7 @@ def home():
 def altair():
     ### GRAHAM
     # Read in the pickles 
-    mid_unit = np.load('/var/www/html/grv-app-deploy/static/mid_unit.npy', encoding='latin1') # try with encoding
+    mid_unit = np.load('/var/www/html/grv-app-deploy/static/mid_unit.npy', encoding='bytes') # try with encoding
     all_surfaces = np.load('/var/www/html/grv-app-deploy/static/realisation_1_10.npy')
     
     # Pick one scenario
