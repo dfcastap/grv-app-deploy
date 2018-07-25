@@ -177,3 +177,13 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
     [Wed Jul 25 09:03:56.929819 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483] OSError: Failed to interpret file '/var/www/html/grv-app-deploy/static/mid_unit.npy' as a pickle
     [Wed Jul 25 09:03:56.929825 2018] [wsgi:error] [pid 8110:tid 139903744464640] [client 185.50.221.158:52483]
     ```
+34. it appears the large files are not saved on the ubuntu server, if this is the case it would explain the error above, so attempt to use [Git LFS](https://git-lfs.github.com/) as it was used to upload them to github to try to download them:
+    follow [this path](https://github.com/git-lfs/git-lfs/wiki/Installation)
+    `$ curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash`
+    then:
+    `$ sudo apt-get install git-lfs`
+    and:
+    `$ git lfs install`
+35. then `$ git lfs pull` to download large files.
+36. use `$ sudo bash -c 'echo > /var/log/apache2/error.log'` to clean error log and `$ sudo apachectl restart` to restart the server
+
