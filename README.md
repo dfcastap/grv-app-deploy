@@ -192,6 +192,5 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
 ## Change ownership and permissions on bucket
 
 Run:
-
-`$ sudo chown -R www-data:www-data /var/www/html/grv-app-deploy/s3bucket/`
-`$ sudo chmod -R 775 /var/www/html/grv-app-deploy/s3bucket/`
+- `$ sudo chown -R www-data:www-data /var/www/html/grv-app-deploy/s3bucket/`
+- `$ sudo chmod -R 775 /var/www/html/grv-app-deploy/s3bucket/`
