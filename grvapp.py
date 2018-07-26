@@ -8,7 +8,6 @@ import pandas as pd
 import altair as alt
 from bokeh.embed import components
 import holoviews as hv
-import warnings
 
 app = Flask(__name__)
 
@@ -16,8 +15,6 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    # ignore numpy.dtype size changed
-    warnings.filterwarnings("ignore", message="numpy.dtype size changed, may indicate binary incompatibility")
 
     ### BEHROOZ
     # read volume file and assign to vol data frame
@@ -107,8 +104,6 @@ def home():
 
 @app.route('/altair')
 def altair():
-    # ignore numpy.dtype size changed
-    warnings.filterwarnings("ignore", message="numpy.dtype size changed")
     ### GRAHAM
     # Read in the pickles
     test_read =  np.load('/var/www/html/grv-app-deploy/test.npy')
