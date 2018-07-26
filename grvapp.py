@@ -17,7 +17,7 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     # ignore numpy.dtype size changed
-    warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+    warnings.filterwarnings("ignore", message="numpy.dtype size changed, may indicate binary incompatibility")
 
     ### BEHROOZ
     # read volume file and assign to vol data frame
