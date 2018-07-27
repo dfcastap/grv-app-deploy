@@ -188,9 +188,20 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
 36. This worked, but now the page "didn't send any data", perhaps due to large file size
 37. use `$ sudo bash -c 'echo > /var/log/apache2/error.log'` to clean error log and `$ sudo apachectl restart` to restart the server
 38. While the cause of the 'page didn't send any data' is not clear, Diego Castañeda suggested [mounting the S3 bucket onto the EC2 instance](http://bit.ly/2NIVgMl)
+39. Procedure followed to set up an [S3 bucket](https://amzn.to/2LTKDGd)
+    - this was initially done directly with the numpy pickles, but as this still does not work...
+    - next step is to try with a small image to check the S3 connection is working, 
+    - then a large image, to check the file size is not an issue
+40. Checking with a small image:
+    - upload small image to S3
+    - check data available on EC2-mounted S3 bucket
+    - create new route in app
+    - test.
 
 ## Change ownership and permissions on bucket
 
 Run:
 - `$ sudo chown -R www-data:www-data /var/www/html/grv-app-deploy/s3bucket/`
 - `$ sudo chmod -R 775 /var/www/html/grv-app-deploy/s3bucket/`
+
+
