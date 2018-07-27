@@ -183,6 +183,10 @@ def entropy():
 def show_me_image():
     return render_template('show_me_image.html')
 
+@app.route('/large_image')
+def show_me_tif():
+    return render_template('show_me_tif.html')
+
 # run
 if __name__ == '__main__':
     #app.run(port=5002, debug=True)
