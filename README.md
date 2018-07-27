@@ -206,6 +206,7 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
     - added `WSGIDaemonProcess grv-app-deploy threads=5 socket-timeout=20` (`socket-timeout=20`) to apache2 config file 
     - resized image in template as was showing at default size
     - test: image **loads** *very slowly*
+    - interestingly, it loads *a lot faster* from the [direct link](http://d1fmtfaf606jtr.cloudfront.net/nasa_large.png)
     - this means that:
         - S3 **works**
         - mounting of S3 onto EC2 **works**
