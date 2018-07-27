@@ -106,7 +106,6 @@ def home():
 def altair():
     ### GRAHAM
     # Read in the pickles
-    test_read =  np.load('/var/www/html/grv-app-deploy/test.npy')
     mid_unit = np.load('/var/www/html/grv-app-deploy/s3bucket/mid_unit.npy')
     all_surfaces = np.load('/var/www/html/grv-app-deploy/s3bucket/realisation_1_10.npy')
     
@@ -142,7 +141,7 @@ def altair():
 def entropy():
     # Read in the pickles 
     entropy = np.load('/var/www/html/grv-app-deploy/s3bucket/entropy_20180610.npy')
-    all_surfaces = np.load('/var/www/html/grv-app-deploy/s3bucket/realisation_1_10.npy')
+    all_surfaces = np.load('/var/www/html/grv-app-deploy/s3bucket/ dimen')
     
     # Pick one scenario
     nb = 3
