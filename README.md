@@ -219,5 +219,42 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
 Run:
 - `$ sudo chown -R www-data:www-data /var/www/html/grv-app-deploy/s3bucket/`
 - `$ sudo chmod -R 775 /var/www/html/grv-app-deploy/s3bucket/`
+- `$ sudo chmod +755 filename`
 
+With all the steps above completed, I attempted again with the /entropy and /altair routes, but I get the following stack trace:
 
+```
+[Fri Jul 27 11:35:51.947641 2018] [mpm_event:notice] [pid 1283:tid 139903880587136] AH00494: SIGHUP received.  Attempting to restart
+[Fri Jul 27 11:35:52.000537 2018] [mpm_event:notice] [pid 1283:tid 139903880587136] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.6.4 Python/3.6 configured -- resuming normal operations
+[Fri Jul 27 11:35:52.000573 2018] [core:notice] [pid 1283:tid 139903880587136] AH00094: Command line: '/usr/sbin/apache2'
+[Fri Jul 27 11:35:56.156415 2018] [wsgi:error] [pid 14021:tid 139903744464640] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+[Fri Jul 27 11:35:56.156444 2018] [wsgi:error] [pid 14021:tid 139903744464640]   return f(*args, **kwds)
+[Fri Jul 27 11:35:58.303229 2018] [wsgi:error] [pid 14022:tid 139903534827264] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+[Fri Jul 27 11:35:58.303260 2018] [wsgi:error] [pid 14022:tid 139903534827264]   return f(*args, **kwds)
+[Fri Jul 27 11:36:16.026811 2018] [core:notice] [pid 1283:tid 139903880587136] AH00051: child pid 14021 exit signal Segmentation fault (11), possible coredump in /etc/apache2
+[Fri Jul 27 11:36:16.026873 2018] [core:notice] [pid 1283:tid 139903880587136] AH00051: child pid 14022 exit signal Segmentation fault (11), possible coredump in /etc/apache2
+[Fri Jul 27 11:36:17.643632 2018] [wsgi:error] [pid 14101:tid 139903744464640] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+[Fri Jul 27 11:36:17.643663 2018] [wsgi:error] [pid 14101:tid 139903744464640]   return f(*args, **kwds)
+[Fri Jul 27 11:36:19.031087 2018] [core:notice] [pid 1283:tid 139903880587136] AH00051: child pid 14101 exit signal Segmentation fault (11), possible coredump in /etc/apache2
+[Fri Jul 27 11:36:24.308217 2018] [wsgi:error] [pid 14132:tid 139903778035456] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+[Fri Jul 27 11:36:24.308250 2018] [wsgi:error] [pid 14132:tid 139903778035456]   return f(*args, **kwds)
+[Fri Jul 27 11:36:26.038966 2018] [core:notice] [pid 1283:tid 139903880587136] AH00051: child pid 14132 exit signal Segmentation fault (11), possible coredump in /etc/apache2
+[Fri Jul 27 11:36:28.614589 2018] [wsgi:error] [pid 14133:tid 139903744464640] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+[Fri Jul 27 11:36:28.614618 2018] [wsgi:error] [pid 14133:tid 139903744464640]   return f(*args, **kwds)
+[Fri Jul 27 11:36:30.043712 2018] [core:notice] [pid 1283:tid 139903880587136] AH00051: child pid 14133 exit signal Segmentation fault (11), possible coredump in /etc/apache2
+[Fri Jul 27 11:36:40.954486 2018] [wsgi:error] [pid 14201:tid 139903744464640] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+[Fri Jul 27 11:36:40.954517 2018] [wsgi:error] [pid 14201:tid 139903744464640]   return f(*args, **kwds)
+[Fri Jul 27 11:36:48.477437 2018] [wsgi:error] [pid 14242:tid 139903744464640] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+[Fri Jul 27 11:36:48.477467 2018] [wsgi:error] [pid 14242:tid 139903744464640]   return f(*args, **kwds)
+[Fri Jul 27 11:36:50.064558 2018] [core:notice] [pid 1283:tid 139903880587136] AH00051: child pid 14201 exit signal Segmentation fault (11), possible coredump in /etc/apache2
+[Fri Jul 27 11:36:50.064629 2018] [core:notice] [pid 1283:tid 139903880587136] AH00051: child pid 14242 exit signal Segmentation fault (11), possible coredump in /etc/apache2
+[Fri Jul 27 11:36:51.683683 2018] [wsgi:error] [pid 14283:tid 139903744464640] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+[Fri Jul 27 11:36:51.683726 2018] [wsgi:error] [pid 14283:tid 139903744464640]   return f(*args, **kwds)
+[Fri Jul 27 11:36:53.068704 2018] [core:notice] [pid 1283:tid 139903880587136] AH00051: child pid 14283 exit signal Segmentation fault (11), possible coredump in /etc/apache2
+[Fri Jul 27 11:36:53.623029 2018] [wsgi:error] [pid 14314:tid 139903601968896] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+[Fri Jul 27 11:36:53.623059 2018] [wsgi:error] [pid 14314:tid 139903601968896]   return f(*args, **kwds)
+[Fri Jul 27 11:36:55.070960 2018] [core:notice] [pid 1283:tid 139903880587136] AH00051: child pid 14314 exit signal Segmentation fault (11), possible coredump in /etc/apache2
+[Fri Jul 27 11:37:00.288799 2018] [wsgi:error] [pid 14315:tid 139903744464640] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+[Fri Jul 27 11:37:00.288830 2018] [wsgi:error] [pid 14315:tid 139903744464640]   return f(*args, **kwds)
+[Fri Jul 27 11:37:02.079113 2018] [core:notice] [pid 1283:tid 139903880587136] AH00051: child pid 14315 exit signal Segmentation fault (11), possible coredump in /etc/apache2
+```
