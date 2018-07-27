@@ -198,10 +198,11 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
     - create new route in app - done, ok
     - test1: page loads with alt-text working correctly. no image but `Distribution` still `In Progress`
     - test2: now `Distribution` is `Available`, reload page: working, image is seen from the `Distribution`.
-41. Check with a large image:
-    - upload small image to S3 -
-    - check data available on EC2-mounted S3 bucket -
-    - create new route in app -
+41. Added a different small image and reloaded, it worked, confirming that S3 bucket, distribution, and mounting all work.
+42. Check with a large image:
+    - upload large image to S3 - done, ok
+    - check data available on EC2-mounted S3 bucket -done, ok
+    - create new route in app - done, ok
     - test1: page loads with alt-text working correctly. no image but `Distribution` still `In Progress`
     - test2: now `Distribution` is `Available`, reload page:
 
