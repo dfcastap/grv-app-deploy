@@ -179,6 +179,10 @@ def entropy():
 #         print('slider_value', slider_value)
 #         return slider_value
 
+@app.route('/test_image')
+def show_me_image():
+    return render_template('show_me_image.html')
+
 # run
 if __name__ == '__main__':
     #app.run(port=5002, debug=True)
