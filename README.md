@@ -258,3 +258,18 @@ With all the steps above completed, I attempted again with the /entropy and /alt
 [Fri Jul 27 11:37:00.288830 2018] [wsgi:error] [pid 14315:tid 139903744464640]   return f(*args, **kwds)
 [Fri Jul 27 11:37:02.079113 2018] [core:notice] [pid 1283:tid 139903880587136] AH00051: child pid 14315 exit signal Segmentation fault (11), possible coredump in /etc/apache2
 ```
+
+## Issue with mod_wsgi and pickles
+
+There seems to be an issue with `mod_wsgi` and `numpy.pickles` as shown [here](http://bit.ly/2LHN7dP):
+
+“In practice, what this means is that neither function objects, class objects or instances of classes which are defined in a WSGI application script file should be stored using the “pickle” module.”
+
+So next step:
+- flatten numpy.pickles from 3D and 4D to 2D
+- save as csv
+- load to S3
+- import to app
+- change grvapp.py to take in these new arrays
+- test
+  
