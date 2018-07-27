@@ -193,10 +193,18 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
     - next step is to try with a small image to check the S3 connection is working, 
     - then a large image, to check the file size is not an issue
 40. Checking with a small image:
-    - upload small image to S3
-    - check data available on EC2-mounted S3 bucket
-    - create new route in app
-    - test.
+    - upload small image to S3 - done, ok
+    - check data available on EC2-mounted S3 bucket - done, ok
+    - create new route in app - done, ok
+    - test1: page loads with alt-text working correctly. no image but `Distribution` still `In Progress`
+    - test2: now `Distribution` is `Available`, reload page: working, image is seen from the `Distribution`.
+41. Check with a large image:
+    - upload small image to S3 -
+    - check data available on EC2-mounted S3 bucket -
+    - create new route in app -
+    - test1: page loads with alt-text working correctly. no image but `Distribution` still `In Progress`
+    - test2: now `Distribution` is `Available`, reload page:
+
 
 ## Change ownership and permissions on bucket
 
