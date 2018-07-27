@@ -199,12 +199,11 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
     - test1: page loads with alt-text working correctly. no image but `Distribution` still `In Progress`
     - test2: now `Distribution` is `Available`, reload page: working, image is seen from the `Distribution`.
 41. Added a different small image and reloaded, it worked, confirming that S3 bucket, distribution, and mounting all work.
-42. Check with a large image:
+42. Check with a large image (tiff does not display in chrome, trying with a large *.png image):
     - upload large image to S3 - done, ok
     - check data available on EC2-mounted S3 bucket -done, ok
     - create new route in app - done, ok
-    - test1: page loads with alt-text working correctly. no image but `Distribution` still `In Progress`
-    - test2: now `Distribution` is `Available`, reload page:
+    - test: image fails to load after `waiting on cache` message in status bar, but loads if direct path used in different tab
 
 
 ## Change ownership and permissions on bucket
