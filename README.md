@@ -203,7 +203,14 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
     - upload large image to S3 - done, ok
     - check data available on EC2-mounted S3 bucket -done, ok
     - create new route in app - done, ok
-    - test: image fails to load after `waiting on cache` message in status bar, but loads if direct path used in different tab
+    - added `WSGIDaemonProcess grv-app-deploy threads=5 socket-timeout=20` (`socket-timeout=20`) to apache2 config file 
+    - resized image in template as was showing at default size
+    - test: image **loads** *very slowly*
+    - this means that:
+        - S3 **works**
+        - mounting of S3 onto EC2 **works**
+        - Distribution of data **works**
+        - reading data (*.png) through apache2 and mod_wsgi **works**
 
 
 ## Change ownership and permissions on bucket
