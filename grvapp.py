@@ -143,7 +143,7 @@ def altair():
 def entropy():
     # Read in the pickles 
     #entropy = np.load('/var/www/html/grv-app-deploy/s3bucket/entropy_20180610.npy')
-    #all_surfaces = np.load('/var/www/html/grv-app-deploy/s3bucket/ dimen')
+    #all_surfaces = np.load('/var/www/html/grv-app-deploy/s3bucket/realisation_1_10.npy')
     entropy = np.load('/var/www/html/grv-app-deploy/s3bucket/f1_array_flat.npy')
     all_surfaces = np.load('/var/www/html/grv-app-deploy/s3bucket/f3_array_flat.npy')
     
