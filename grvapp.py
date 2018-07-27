@@ -184,8 +184,8 @@ def show_me_image():
     return render_template('show_me_image.html')
 
 @app.route('/large_image')
-def show_me_tif():
-    return render_template('show_me_tif.html')
+def show_me_large():
+    return render_template('show_me_large.html')
 
 # run
 if __name__ == '__main__':
