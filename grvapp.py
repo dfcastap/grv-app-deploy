@@ -106,8 +106,10 @@ def home():
 def altair():
     ### GRAHAM
     # Read in the pickles
-    mid_unit = np.load('/var/www/html/grv-app-deploy/s3bucket/mid_unit.npy')
-    all_surfaces = np.load('/var/www/html/grv-app-deploy/s3bucket/realisation_1_10.npy')
+    #mid_unit = np.load('/var/www/html/grv-app-deploy/s3bucket/mid_unit.npy')
+    #all_surfaces = np.load('/var/www/html/grv-app-deploy/s3bucket/realisation_1_10.npy')
+    mid_unit = np.load('/var/www/html/grv-app-deploy/s3bucket/f2_array_flat.npy')
+    all_surfaces = np.load('/var/www/html/grv-app-deploy/s3bucket/f3_array_flat.npy')
     
     # Pick one scenario
     nb = 3
@@ -140,8 +142,10 @@ def altair():
 @app.route('/entropy')
 def entropy():
     # Read in the pickles 
-    entropy = np.load('/var/www/html/grv-app-deploy/s3bucket/entropy_20180610.npy')
-    all_surfaces = np.load('/var/www/html/grv-app-deploy/s3bucket/ dimen')
+    #entropy = np.load('/var/www/html/grv-app-deploy/s3bucket/entropy_20180610.npy')
+    #all_surfaces = np.load('/var/www/html/grv-app-deploy/s3bucket/ dimen')
+    entropy = np.load('/var/www/html/grv-app-deploy/s3bucket/f1_array_flat.npy')
+    all_surfaces = np.load('/var/www/html/grv-app-deploy/s3bucket/f3_array_flat.npy')
     
     # Pick one scenario
     nb = 3
