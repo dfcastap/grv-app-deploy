@@ -160,7 +160,7 @@ def entropy():
     scenario = all_surfaces[:,:,:,nb]
 
     # Inject the surfaces into the mid_unit
-    combined = entropy
+    #combined = entropy
     entropy[scenario==1] = np.nan
     
     # Make the Holoviews DataSpaces
