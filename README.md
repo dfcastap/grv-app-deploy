@@ -26,7 +26,7 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
 11. Create the project folder or clone the project from your Git repository
 12. Set up the virtual environment.
     `$ cd cloned_project`
-    `$ virtualanv py36 --python=python3.6` to create a Python 3.6 environment - Python 3.6 is required for altair
+    `$ virtualenv py36 --python=python3.6` to create a Python 3.6 environment - Python 3.6 is required for altair
 13. Activate the environment (use deactivate to exit the environment).
     `$ . py36/bin/activate`
 14. Check python version with `$ python -V` output: `Python 3.6.6`
@@ -73,7 +73,7 @@ This procedure is based on [this blog](http://bit.ly/2LJUONn) and its help is gr
     `$ sudo vi /etc/apache2/sites-enabled/000-default.conf`
 28. Paste this in right after the line with DocumentRoot /var/www/html
     ```python
-    WSGIDaemonProcess grv-app-deploy threads=5
+    WSGIDaemonProcess grv-app-deploy threads=5 socket-timeout=20 memory-limit=850000000 virtual-memory-limit=850000000
     WSGIScriptAlias / /var/www/html/grv-app-deploy/app.wsgi
 
     <Directory grv-app-deploy>
