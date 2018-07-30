@@ -110,8 +110,8 @@ def altair():
     #all_surfaces = np.load('/var/www/html/grv-app-deploy/s3bucket/realisation_1_10.npy')
 
     # load and reshape arrays
-    f2_array_reshaped = np.load('/var/www/html/grv-app-deploy/s3bucket/f2_array_flat.npy').reshape(250, 162, 100)
-    f3_array_reshaped = np.load('/var/www/html/grv-app-deploy/s3bucket/f3_array_flat.npy').reshape(250, 162, 100, 200)
+    f2_array_reshaped = np.load('/var/www/html/grv-app-deploy/static/f2_array_flat.npy').reshape(250, 162, 100)
+    f3_array_reshaped = np.load('/var/www/html/grv-app-deploy/static/f3_array_flat.npy').reshape(250, 162, 100, 200)
     mid_unit = f2_array_reshaped
     all_surfaces = f3_array_reshaped
     
@@ -150,8 +150,8 @@ def entropy():
     #all_surfaces = np.load('/var/www/html/grv-app-deploy/s3bucket/realisation_1_10.npy')
 
     # load and reshape arrays
-    f1_array_reshaped = np.load('/var/www/html/grv-app-deploy/s3bucket/f1_array_flat.npy').reshape(250, 162, 100)
-    f3_array_reshaped = np.load('/var/www/html/grv-app-deploy/s3bucket/f3_array_flat.npy').reshape(250, 162, 100, 200)
+    f1_array_reshaped = np.load('/var/www/html/grv-app-deploy/static/f1_array_flat.npy').reshape(250, 162, 100)
+    f3_array_reshaped = np.load('/var/www/html/grv-app-deploy/static/f3_array_flat.npy').reshape(250, 162, 100, 200)
     entropy = f1_array_reshaped
     all_surfaces = f3_array_reshaped
     
