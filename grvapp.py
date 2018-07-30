@@ -144,8 +144,10 @@ def entropy():
     # Read in the pickles 
     #entropy = np.load('/var/www/html/grv-app-deploy/s3bucket/entropy_20180610.npy')
     #all_surfaces = np.load('/var/www/html/grv-app-deploy/s3bucket/realisation_1_10.npy')
-    entropy = np.load('/var/www/html/grv-app-deploy/s3bucket/f1_array_flat.npy')
-    all_surfaces = np.load('/var/www/html/grv-app-deploy/s3bucket/f3_array_flat.npy')
+    #entropy = np.load('/var/www/html/grv-app-deploy/s3bucket/f1_array_flat.npy')
+    #all_surfaces = np.load('/var/www/html/grv-app-deploy/s3bucket/f3_array_flat.npy')
+    entropy = np.load('/var/www/html/grv-app-deploy/static/f1_array_flat.npy')
+    all_surfaces = np.load('/var/www/html/grv-app-deploy/static/f3_array_flat.npy')
     
     # Pick one scenario
     nb = 3
