@@ -111,7 +111,7 @@ def altair():
 
     # load and reshape arrays
     f2_array_reshaped = np.fromfile('/var/www/html/grv-app-deploy/static/f2_array_flat.npy',dtype=float,count=-1).reshape(250, 162, 100)
-    f3_array_reshaped = np.load('/var/www/html/grv-app-deploy/static/f3_array_flat.npy').reshape(250, 162, 100, 200)
+    f3_array_reshaped = np.fromfile('/var/www/html/grv-app-deploy/static/f3_array_flat.npy',dtype=float,count=-1).reshape(250, 162, 100, 200)
     mid_unit = f2_array_reshaped
     all_surfaces = f3_array_reshaped
     
