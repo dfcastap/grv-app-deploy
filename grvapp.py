@@ -8,8 +8,6 @@ import pandas as pd
 import altair as alt
 from bokeh.embed import components
 import holoviews as hv
-import warnings
-warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 
 app = Flask(__name__)
 
