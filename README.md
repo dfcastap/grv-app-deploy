@@ -303,3 +303,23 @@ So next step:
 [Mon Jul 30 13:31:42.841500 2018] [core:notice] [pid 14686:tid 140448154359680] AH00051: child pid 15969 exit signal Segmentation fault (11), possible coredump in /etc/apache2
 ```
   
+## Changes to WSGIDaemonProcess
+Based on [video from mod_wsgi creator Graham Dumpleton](https://youtu.be/H6Q3l11fjU0) and [docs](http://bit.ly/2vq9XfS), apache config file `/etc/apache2/sites-enabled/000-default.conf` to be modified as follows:
+ - Edit file with: `$ sudo vim /etc/apache2/sites-enabled/000-default.conf`
+ - Paste this in right after the line with DocumentRoot /var/www/html:
+ ```python
+#WSGIDaemonProcess grv-app-deploy threads=5 socket-timeout=20 memory-limit=850000000 virtual-memory-limit=850000000
+WSGIDaemonProcess grv-app-deploy display-name='%{GROUP}' lang='en_US.UTF-8' locale='en_US.UTF-8' threads=5 queue-timeout=45 \
+    socket-timeout=60 connect-timeout=15 request-timeout=60 inactivity-timeout=0 startup-timeout=15 deadlock-timeout=60 \
+    graceful-timeout=15 eviction-timeout=0 restart-interval=0 shutdown-timeout=5 maximum-requests=0 \
+    memory-limit=850000000 virtual-memory-limit=850000000
+    
+WSGIScriptAlias / /var/www/html/grv-app-deploy/app.wsgi
+
+<Directory grv-app-deploy>
+    WSGIProcessGroup grv-app-deploy
+    WSGIApplicationGroup %{GLOBAL}
+    Order deny,allow
+    Allow from all
+</Directory>
+ ```
