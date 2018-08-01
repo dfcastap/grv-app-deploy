@@ -313,7 +313,7 @@ WSGIDaemonProcess grv-app-deploy display-name='%{GROUP}' lang='en_US.UTF-8' loca
     socket-timeout=60 connect-timeout=15 request-timeout=60 inactivity-timeout=0 startup-timeout=15 deadlock-timeout=60 \
     graceful-timeout=15 eviction-timeout=0 restart-interval=0 shutdown-timeout=5 maximum-requests=0 \
     memory-limit=850000000 virtual-memory-limit=850000000
-    
+
 WSGIScriptAlias / /var/www/html/grv-app-deploy/app.wsgi
 
 <Directory grv-app-deploy>
@@ -323,3 +323,19 @@ WSGIScriptAlias / /var/www/html/grv-app-deploy/app.wsgi
     Allow from all
 </Directory>
  ```
+=> change made, no change to errors, error stack trace below:
+
+```
+[Wed Aug 01 14:55:13.347443 2018] [mpm_event:notice] [pid 14686:tid 140448154359680] AH00494: SIGHUP received.  Attempting to restart
+[Wed Aug 01 14:55:13.400283 2018] [mpm_event:notice] [pid 14686:tid 140448154359680] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.6.4 Python/3.6 configured -- resuming normal operations
+[Wed Aug 01 14:55:13.400306 2018] [core:notice] [pid 14686:tid 140448154359680] AH00094: Command line: '/usr/sbin/apache2'
+[Wed Aug 01 14:55:18.653625 2018] [wsgi:error] [pid 27081:tid 140447779288832] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+[Wed Aug 01 14:55:18.653658 2018] [wsgi:error] [pid 27081:tid 140447779288832]   return f(*args, **kwds)
+[Wed Aug 01 14:55:19.406750 2018] [core:notice] [pid 14686:tid 140448154359680] AH00051: child pid 27081 exit signal Segmentation fault (11), possible coredump in /etc/apache2
+[Wed Aug 01 14:55:20.232231 2018] [wsgi:error] [pid 27082:tid 140447980713728] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+[Wed Aug 01 14:55:20.232262 2018] [wsgi:error] [pid 27082:tid 140447980713728]   return f(*args, **kwds)
+[Wed Aug 01 14:55:21.409273 2018] [core:notice] [pid 14686:tid 140448154359680] AH00051: child pid 27082 exit signal Segmentation fault (11), possible coredump in /etc/apache2
+[Wed Aug 01 14:55:21.829169 2018] [wsgi:error] [pid 27155:tid 140447938750208] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+[Wed Aug 01 14:55:21.829201 2018] [wsgi:error] [pid 27155:tid 140447938750208]   return f(*args, **kwds)
+[Wed Aug 01 14:55:23.411768 2018] [core:notice] [pid 14686:tid 140448154359680] AH00051: child pid 27155 exit signal Segmentation fault (11), possible coredump in /etc/apache2
+```
