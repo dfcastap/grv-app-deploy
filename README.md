@@ -355,3 +355,12 @@ Based on same as above, added following line to code: `WSGIRestrictEmbedded On`
 
 The fact that `Embedded mode of mod_wsgi disabled by runtime configuration` suggests the `WSGIRestrictEmbedded On` was placed correctly _but_ that a process _is trying_ to run in embedded mode, which mod_wsgi strongly dissaproves.
 => need to find out how to fix this.
+
+## Changes to WSGIProcessGroup
+
+Based on same as above (docs [here](bit.ly/2O3jZeE)), modified following line as follows:
+
+Line before: `WSGIProcessGroup grv-app-deploy`
+Line after: `WSGIProcessGroup %{GLOBAL}`
+
+=> 
