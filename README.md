@@ -525,3 +525,105 @@ According to [modwsgi.readthedocs](http://bit.ly/2O6xNoF) the most important det
     => Apache/2.4.18 (Ubuntu)
  - The MPM which Apache has been compiled to use from the ‘Server MPM’ entry.
     => event
+
+Still according to [modwsgi.readthedocs](http://bit.ly/2O6xNoF)
+"What is often more useful is the actual arguments which were supplied to the ‘configure’ command when Apache was built.
+To determine this information you need to do the following.
+
+Work out where ‘apxs2’ or ‘apxs’ is installed.
+Open this file and find setting for ‘$installbuilddir’.
+Open the ‘config.nice’ file in the directory specified for build directory.
+On MacOS X, for the operating system supplied Apache this file is located at ‘/usr/share/httpd/build/config.nice’. The contents of the file is:"
+
+So, going to: `$ /usr/share/apache2/build` and running `vim config.nice` yields:
+
+```shell
+#! /bin/sh
+#
+# Created by configure
+
+CFLAGS="-pipe -g -O2 -fstack-protector-strong -Wformat -Werror=format-security"; export CFLAGS
+CPPFLAGS="-DPLATFORM='"Ubuntu"' -DBUILD_DATETIME='"2018-06-07T19:43:03"' -Wdate-time -D_FORTIFY_SOURCE=2"; export CPPFLAGS
+LDFLAGS="-Wl,--as-needed -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now"; export LDFLAGS
+LTFLAGS="--no-silent"; export LTFLAGS
+"./configure" \
+"--host=x86_64-linux-gnu" \
+"--build=x86_64-linux-gnu" \
+"--enable-layout=Debian" \
+"--enable-so" \
+"--with-program-name=apache2" \
+"--enable-suexec" \
+"--with-suexec-caller=www-data" \
+"--with-suexec-bin=/usr/lib/apache2/suexec" \
+"--with-suexec-docroot=/var/www" \
+"--with-suexec-userdir=public_html" \
+"--with-suexec-logfile=/var/log/apache2/suexec.log" \
+"--with-suexec-uidmin=100" \
+"--enable-suexec=shared" \
+"--enable-log-config=static" \
+"--with-apr=/usr/bin/apr-1-config" \
+"--with-apr-util=/usr/bin/apu-1-config" \
+"--with-pcre=yes" \
+"--enable-pie" \
+"--enable-mpms-shared=all" \
+"--enable-mods-shared=all cgi ident authnz_fcgi" \
+"--enable-mods-static=unixd logio watchdog version" \
+"CFLAGS=-pipe -g -O2 -fstack-protector-strong -Wformat -Werror=format-security" \
+"CPPFLAGS=-DPLATFORM=Ubuntu -DBUILD_DATETIME=2018-06-07T19:43:03 -Wdate-time -D_FORTIFY_SOURCE=2" \
+"LDFLAGS=-Wl,--as-needed -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now" \
+"LTFLAGS=--no-silent" \
+"build_alias=x86_64-linux-gnu" \
+"host_alias=x86_64-linux-gnu" \
+"$@"
+```
+
+Following the docs, the `--enable-layout` yields: `--enable-layout=Debian`
+
+`Apache Modules Loaded` are yielded by `/usr/sbin$ apache2 -l` and gives:
+
+```shell
+Compiled in modules:
+  core.c
+  mod_so.c
+  mod_watchdog.c
+  http_core.c
+  mod_log_config.c
+  mod_logio.c
+  mod_version.c
+  mod_unixd.c
+```
+
+Running `/usr/sbin$ apache2 -M` to get 'determine what Apache modules will be loaded dynamically' (from docs) returns the `Invalid Mutex directory in argument file:${APACHE_LOCK_DIR}` error so run `source /etc/apache2/envvars` again to be able to run `/usr/sbin$ apache2 -M` and yield:
+
+```shell
+Loaded Modules:
+ core_module (static)
+ so_module (static)
+ watchdog_module (static)
+ http_module (static)
+ log_config_module (static)
+ logio_module (static)
+ version_module (static)
+ unixd_module (static)
+ access_compat_module (shared)
+ alias_module (shared)
+ auth_basic_module (shared)
+ authn_core_module (shared)
+ authn_file_module (shared)
+ authz_core_module (shared)
+ authz_host_module (shared)
+ authz_user_module (shared)
+ autoindex_module (shared)
+ deflate_module (shared)
+ dir_module (shared)
+ env_module (shared)
+ filter_module (shared)
+ mime_module (shared)
+ mpm_event_module (shared)
+ negotiation_module (shared)
+ setenvif_module (shared)
+ status_module (shared)
+ wsgi_module (shared)
+ ```
+
+ 
