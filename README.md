@@ -484,3 +484,44 @@ Also now with `WSGIRestrictEmbedded On` set, the app still runs on first page, s
 `wsgi:info] [pid 4961:tid 140448154359680] mod_wsgi (pid=4961): Attach interpreter ''` pointed to [this post](http://bit.ly/2ODhMYs) which suggests that there is a problem with the Python installation and that `Python installation needs to have been installed with the --enable-shared option given to its 'configure' command.`. More information is available [here](http://bit.ly/2vcoahb). This suggests I should _reinstall_ `python` and therefore _rebuild_ `mod_wsgi` as it is built against a specific Python version.
 
 **However**: I do not know how to clean old versions completely so perhaps I should just rebuild the whole app... not ideal.
+
+## Following the errors...
+
+Got `Invalid Mutex directory in argument file:${APACHE_LOCK_DIR}` error trying to run `apache2 -V` to follow [Apache Build Information](http://bit.ly/2O6xNoF). 
+
+Using `source /etc/apache2/envvars` and `apache2 -V` from [here](http://bit.ly/2MgLhOk) yields for `apache2 -V`:
+```shell
+(py36) ubuntu@ip-172-31-29-84:/home/ubuntu/grv-app-deploy$ apache2 -V
+Server version: Apache/2.4.18 (Ubuntu)
+Server built:   2018-06-07T19:43:03
+Server\'s Module Magic Number: 20120211:52
+Server loaded:  APR 1.5.2, APR-UTIL 1.5.4
+Compiled using: APR 1.5.2, APR-UTIL 1.5.4
+Architecture:   64-bit
+Server MPM:     event
+  threaded:     yes (fixed thread count)
+    forked:     yes (variable process count)
+Server compiled with....
+ -D APR_HAS_SENDFILE
+ -D APR_HAS_MMAP
+ -D APR_HAVE_IPV6 (IPv4-mapped addresses enabled)
+ -D APR_USE_SYSVSEM_SERIALIZE
+ -D APR_USE_PTHREAD_SERIALIZE
+ -D SINGLE_LISTEN_UNSERIALIZED_ACCEPT
+ -D APR_HAS_OTHER_CHILD
+ -D AP_HAVE_RELIABLE_PIPED_LOGS
+ -D DYNAMIC_MODULE_LIMIT=256
+ -D HTTPD_ROOT="/etc/apache2"
+ -D SUEXEC_BIN="/usr/lib/apache2/suexec"
+ -D DEFAULT_PIDLOG="/var/run/apache2.pid"
+ -D DEFAULT_SCOREBOARD="logs/apache_runtime_status"
+ -D DEFAULT_ERRORLOG="logs/error_log"
+ -D AP_TYPES_CONFIG_FILE="mime.types"
+ -D SERVER_CONFIG_FILE="apache2.conf"
+```
+
+According to [modwsgi.readthedocs](http://bit.ly/2O6xNoF) the most important details are:
+ - The version of Apache from the ‘Server version’ entry. 
+    => Apache/2.4.18 (Ubuntu)
+ - The MPM which Apache has been compiled to use from the ‘Server MPM’ entry.
+    => event
