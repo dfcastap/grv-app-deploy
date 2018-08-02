@@ -339,3 +339,19 @@ WSGIScriptAlias / /var/www/html/grv-app-deploy/app.wsgi
 [Wed Aug 01 14:55:21.829201 2018] [wsgi:error] [pid 27155:tid 140447938750208]   return f(*args, **kwds)
 [Wed Aug 01 14:55:23.411768 2018] [core:notice] [pid 14686:tid 140448154359680] AH00051: child pid 27155 exit signal Segmentation fault (11), possible coredump in /etc/apache2
 ```
+
+## Changes to WSGIDaemonProcess
+
+Based on same as above, added following line to code: `WSGIRestrictEmbedded On`
+ - this **must** be added **above** the `<VirtualHost *:80>` line.
+
+=> The server does not run, stack trace:
+
+```
+[Thu Aug 02 06:40:50.190275 2018] [mpm_event:notice] [pid 14686:tid 140448154359680] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.6.4 Python/3.6 configured -- resuming normal operations
+[Thu Aug 02 06:40:50.190299 2018] [core:notice] [pid 14686:tid 140448154359680] AH00094: Command line: '/usr/sbin/apache2'
+[Thu Aug 02 06:42:13.784533 2018] [wsgi:error] [pid 4014:tid 140447880001280] [client 185.50.221.158:58598] Embedded mode of mod_wsgi disabled by runtime configuration: /var/www/html/grv-app-deploy/app.wsgi
+```
+
+The fact that `Embedded mode of mod_wsgi disabled by runtime configuration` suggests the `WSGIRestrictEmbedded On` was placed correctly _but_ that a process _is trying_ to run in embedded mode, which mod_wsgi strongly dissaproves.
+=> need to find out how to fix this.
