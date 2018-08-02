@@ -363,4 +363,124 @@ Based on same as above (docs [here](bit.ly/2O3jZeE)), modified following line as
 Line before: `WSGIProcessGroup grv-app-deploy`
 Line after: `WSGIProcessGroup %{GLOBAL}`
 
-=> 
+=> error persisted:
+
+```
+[Thu Aug 02 06:54:55.062531 2018] [mpm_event:notice] [pid 14686:tid 140448154359680] AH00494: SIGHUP received.  Attempting to restart
+[Thu Aug 02 06:54:55.115037 2018] [mpm_event:notice] [pid 14686:tid 140448154359680] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.6.4 Python/3.6 configured -- resuming normal operations
+[Thu Aug 02 06:54:55.115055 2018] [core:notice] [pid 14686:tid 140448154359680] AH00094: Command line: '/usr/sbin/apache2'
+[Thu Aug 02 06:55:05.159824 2018] [wsgi:error] [pid 4129:tid 140447980713728] [client 185.50.221.158:58695] Embedded mode of mod_wsgi disabled by runtime configuration: /var/www/html/grv-app-deploy/app.wsgi
+```
+
+`Embedded mode of mod_wsgi disabled by runtime configuration` still being returned. 
+
+=> Code broken. Something running in embedded mode?
+
+`/etc/apache2/sites-enabled/000-default.conf` current state:
+
+```Python
+WSGIRestrictEmbedded On
+
+<VirtualHost *:80>
+        # The ServerName directive sets the request scheme, hostname and port that
+        # the server uses to identify itself. This is used when creating
+        # redirection URLs. In the context of virtual hosts, the ServerName
+        # specifies what hostname must appear in the request's Host: header to
+        # match this virtual host. For the default virtual host (this file) this
+        # value is not decisive as it is used as a last resort host regardless.
+        # However, you must set it for any further virtual host explicitly.
+        #ServerName www.example.com
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/html
+
+        WSGIDaemonProcess grv-app-deploy display-name='%{GROUP}' lang='en_US.UTF-8' locale='en_US.UTF-8' threads=5 queue-timeout=45 \
+                socket-timeout=60 connect-timeout=15 request-timeout=60 inactivity-timeout=0 startup-timeout=15 deadlock-timeout=60 \
+                graceful-timeout=15 eviction-timeout=0 restart-interval=0 shutdown-timeout=5 maximum-requests=0 \
+                memory-limit=850000000 virtual-memory-limit=850000000
+
+        WSGIScriptAlias / /var/www/html/grv-app-deploy/app.wsgi
+
+        <Directory grv-app-deploy>
+                #WSGIProcessGroup grv-app-deploy
+                WSGIProcessGroup %{GLOBAL}
+                WSGIApplicationGroup %{GLOBAL}
+                Order deny,allow
+                Allow from all
+        </Directory>
+
+        # Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+        # error, crit, alert, emerg.
+        # It is also possible to configure the loglevel for particular
+        # modules, e.g.
+        #LogLevel info ssl:warn
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        # For most configuration files from conf-available/, which are
+        # enabled or disabled at a global level, it is possible to
+        # include a line for only one particular virtual host. For example the
+        # following line enables the CGI configuration for this host only
+        # after it has been globally disabled with "a2disconf".
+        #Include conf-available/serve-cgi-bin.conf
+</VirtualHost>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+```
+
+From [Checking your installation](bit.ly/2O3YGtf), switch back `WSGIProcessGroup` to previous value:
+ - `WSGIProcessGroup grv-app-deploy`
+
+updates to config file:
+ - `WSGIScriptAlias / /var/www/html/grv-app-deploy/app.wsgi` changed to `WSGIScriptAlias /grv-app-deploy /var/www/html/grv-app-deploy/app.wsgi`
+ - `WSGIProcessGroup grv-app-deploy` moved out of `<Directory>`:
+
+```Python
+WSGIRestrictEmbedded On
+
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/html
+
+        WSGIDaemonProcess grv-app-deploy display-name='%{GROUP}' lang='en_US.UTF-8' locale='en_US.UTF-8' threads=5 queue-timeout=45 \
+                socket-timeout=60 connect-timeout=15 request-timeout=60 inactivity-timeout=0 startup-timeout=15 deadlock-timeout=60 \
+                graceful-timeout=15 eviction-timeout=0 restart-interval=0 shutdown-timeout=5 maximum-requests=0 \
+                memory-limit=850000000 virtual-memory-limit=850000000
+
+        WSGIProcessGroup grv-app-deploy
+
+        WSGIScriptAlias / /var/www/html/grv-app-deploy/app.wsgi
+
+        <Directory grv-app-deploy>
+                #WSGIProcessGroup grv-app-deploy
+                WSGIApplicationGroup %{GLOBAL}
+                Order deny,allow
+                Allow from all
+        </Directory>
+        ...
+```
+
+=> Error log:
+
+```
+[Thu Aug 02 07:23:42.914963 2018] [mpm_event:notice] [pid 14686:tid 140448154359680] AH00494: SIGHUP received.  Attempting to restart
+[Thu Aug 02 07:23:42.967653 2018] [mpm_event:notice] [pid 14686:tid 140448154359680] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.6.4 Python/3.6 configured -- resuming normal operations
+[Thu Aug 02 07:23:42.967675 2018] [core:notice] [pid 14686:tid 140448154359680] AH00094: Command line: '/usr/sbin/apache2'
+[Thu Aug 02 07:23:57.236958 2018] [wsgi:error] [pid 4688:tid 140448008148736] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+[Thu Aug 02 07:23:57.236991 2018] [wsgi:error] [pid 4688:tid 140448008148736]   return f(*args, **kwds)
+[Thu Aug 02 07:23:57.949125 2018] [wsgi:error] [pid 4690:tid 140447880001280] [client 185.50.221.158:58811] Truncated or oversized response headers received from daemon process 'grv-app-deploy': /var/www/html/grv-app-deploy/app.wsgi
+[Thu Aug 02 07:23:57.983496 2018] [core:notice] [pid 14686:tid 140448154359680] AH00051: child pid 4688 exit signal Segmentation fault (11), possible coredump in /etc/apache2
+```
+=> `Truncated or oversized response headers received from daemon process 'grv-app-deploy'`
+Also now with `WSGIRestrictEmbedded On` set, the app still runs on first page, suggesting it is _no longer_ running in embedded mode.
+
+[This](http://bit.ly/2OAsdfj) github issue suggested setting `LogLevel info`, this yielded the following information:
+```
+[Thu Aug 02 07:40:15.473822 2018] [wsgi:info] [pid 4961:tid 140448154359680] mod_wsgi (pid=4961): Attach interpreter ''.
+[Thu Aug 02 07:50:23.733644 2018] [wsgi:info] [pid 4961:tid 140448008173312] mod_wsgi (pid=4961): Create interpreter 'ip-172-31-29-84.ec2.internal|'.
+```
+
+`wsgi:info] [pid 4961:tid 140448154359680] mod_wsgi (pid=4961): Attach interpreter ''` pointed to [this post](http://bit.ly/2ODhMYs) which suggests that there is a problem with the Python installation and that `Python installation needs to have been installed with the --enable-shared option given to its 'configure' command.`. More information is available [here](http://bit.ly/2vcoahb). This suggests I should _reinstall_ `python` and therefore _rebuild_ `mod_wsgi` as it is built against a specific Python version.
+
+**However**: I do not know how to clean old versions completely so perhaps I should just rebuild the whole app... not ideal.
