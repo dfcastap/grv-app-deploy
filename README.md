@@ -730,3 +730,20 @@ From [here](http://bit.ly/2MbQEOv):
 'This actually corresponds to the directive:'
 
 `WSGIApplicationGroup %{GLOBAL}`
+
+The output above _seems ok_ but not sure.
+
+## Single Or Multi Threaded
+
+Replacing app.wsgi content with:
+
+```python
+
+```
+
+From [here](http://bit.ly/2Mcap8G)
+'If multithreaded, this will yield:'
+
+`wsgi.multithread = True`
+
+yields: `wsgi.multithread = True` which is correct as `thread=5` is set in config file.
