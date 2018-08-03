@@ -747,3 +747,60 @@ From [here](http://bit.ly/2Mcap8G)
 `wsgi.multithread = True`
 
 yields: `wsgi.multithread = True` which is correct as `thread=5` is set in config file.
+
+## Following the errors:
+
+For the error: `wsgi:error Truncated or oversized response headers received from daemon process`
+
+[this](http://bit.ly/2O8hw2n) and other pages suggest setting `WSGIApplicationGroup %{GLOBAL}`, but this is already done in my app. I also tried putting this command at different levels of the config file but to no avail.
+
+[this page](http://bit.ly/2OaD4Mb) suggests increasing `header-buffer-size=nnn` in the [WSGIDaemonProcess](http://bit.ly/2O8AVk5) but the poster had no success with this.
+
+let's try, in `WSGIDaemonProcess` I add `header-buffer-size=1000000`, no success error persists:
+
+```shell
+[Fri Aug 03 08:49:11.742568 2018] [wsgi:error] [pid 10820:tid 140447980713728] [client 185.50.221.158:63860] Truncated or oversized response headers received from daemon process 'grv-app-deploy': /var/www/html/grv-app-deploy/app.wsgi
+```
+
+remove `header-buffer-size`
+
+On [this page](http://bit.ly/2OaD4Mb) someone also mentions simply scaling up the EC2 instance - as Matt Hall has suggested. 
+Let's try.
+
+## Result of changing instance type:
+
+Actions:
+ - created an AMI of my instance using [this](https://amzn.to/2MgqZo3) page
+ - then from the EC2 dashboard: Actions>Instance State>Stop
+ - then from the EC2 dashboard: Actions>Instance Settings>Change Instance Type and selected `t2.small`
+ - then from the EC2 dashboard: Actions>Instance State>Start
+ - then reloaded new `IPv4 Public IP` in a broswer and checked pages:
+    - / works
+    - /test_image works
+    - /large_image works
+    - /altair and /entropy give the same error as before, see stack trace below:
+    ```
+    [Fri Aug 03 08:50:42.594930 2018] [mpm_event:notice] [pid 14686:tid 140448154359680] AH00494: SIGHUP received.  Attempting to restart
+    [Fri Aug 03 08:50:42.788889 2018] [mpm_event:notice] [pid 14686:tid 140448154359680] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.6.4 Python/3.6 configured -- resuming normal operations
+    [Fri Aug 03 08:50:42.788912 2018] [core:notice] [pid 14686:tid 140448154359680] AH00094: Command line: '/usr/sbin/apache2'
+    [Fri Aug 03 08:50:43.536582 2018] [wsgi:error] [pid 10949:tid 140448008148736] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+    [Fri Aug 03 08:50:43.536614 2018] [wsgi:error] [pid 10949:tid 140448008148736]   return f(*args, **kwds)
+    [Fri Aug 03 11:28:01.678986 2018] [mpm_event:notice] [pid 14686:tid 140448154359680] AH00491: caught SIGTERM, shutting down
+    [Fri Aug 03 11:28:35.501633 2018] [mpm_event:notice] [pid 1291:tid 140647754004352] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.6.4 Python/3.6 configured -- resuming normal operations
+    [Fri Aug 03 11:28:35.502281 2018] [core:notice] [pid 1291:tid 140647754004352] AH00094: Command line: '/usr/sbin/apache2'
+    [Fri Aug 03 11:48:02.644204 2018] [mpm_event:notice] [pid 1291:tid 140647754004352] AH00491: caught SIGTERM, shutting down
+    [Fri Aug 03 11:51:09.446378 2018] [mpm_event:notice] [pid 1318:tid 140516636018560] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.6.4 Python/3.6 configured -- resuming normal operations
+    [Fri Aug 03 11:51:09.446851 2018] [core:notice] [pid 1318:tid 140516636018560] AH00094: Command line: '/usr/sbin/apache2'
+    [Fri Aug 03 11:52:30.204934 2018] [wsgi:error] [pid 1321:tid 140516489832192] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+    [Fri Aug 03 11:52:30.204988 2018] [wsgi:error] [pid 1321:tid 140516489832192]   return f(*args, **kwds)
+    [Fri Aug 03 12:02:28.557734 2018] [wsgi:error] [pid 1322:tid 140516305864448] [client 185.50.221.158:64747] Truncated or oversized response headers received from daemon process 'grv-app-deploy': /var/www/html/grv-app-deploy/app.wsgi
+    [Fri Aug 03 12:02:29.179056 2018] [core:notice] [pid 1318:tid 140516636018560] AH00051: child pid 1321 exit signal Segmentation fault (11), possible coredump in /etc/apache2
+    [Fri Aug 03 12:08:05.619540 2018] [wsgi:error] [pid 1499:tid 140516489832192] /usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+    [Fri Aug 03 12:08:05.619591 2018] [wsgi:error] [pid 1499:tid 140516489832192]   return f(*args, **kwds)
+    [Fri Aug 03 12:08:06.616868 2018] [wsgi:error] [pid 1323:tid 140516526647040] [client 185.50.221.158:64909] Truncated or oversized response headers received from daemon process 'grv-app-deploy': /var/www/html/grv-app-deploy/app.wsgi
+    [Fri Aug 03 12:08:07.555846 2018] [core:notice] [pid 1318:tid 140516636018560] AH00051: child pid 1499 exit signal Segmentation fault (11), possible coredump in /etc/apache2
+    ```
+    - i.e. the same errors and notices as before:
+        - `RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88`
+        - `Truncated or oversized response headers received from daemon process 'grv-app-deploy'` 
+        - `exit signal Segmentation fault (11), possible coredump in /etc/apache2`
