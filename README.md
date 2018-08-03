@@ -626,4 +626,107 @@ Loaded Modules:
  wsgi_module (shared)
  ```
 
- 
+ 'Validate that ‘mod_wsgi.so’ is using a shared library for Python' by running `$ ldd mod_wsgi.so` in `~/grv-app-deploy/mod_wsgi-4.6.4/src/server/.libs` to yield:
+
+ ```shell
+	linux-vdso.so.1 =>  (0x00007fff769a9000)
+	libpython3.6m.so.1.0 => /usr/lib/x86_64-linux-gnu/libpython3.6m.so.1.0 (0x00007f7a8f964000)
+	libpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0 (0x00007f7a8f747000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f7a8f37d000)
+	libexpat.so.1 => /lib/x86_64-linux-gnu/libexpat.so.1 (0x00007f7a8f154000)
+	libz.so.1 => /lib/x86_64-linux-gnu/libz.so.1 (0x00007f7a8ef3a000)
+	libdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x00007f7a8ed36000)
+	libutil.so.1 => /lib/x86_64-linux-gnu/libutil.so.1 (0x00007f7a8eb33000)
+	libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f7a8e82a000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007f7a90292000)
+```
+
+'What you want to see is a reference to an instance of ‘libpythonX.Y.so’. Normally the operating system shared library version suffix would always be ‘1.0’. What it is shouldn’t really matter though.'
+
+Here we have: `libpythonX.Y.so = libpython3.6m.so.1.0`
+
+As the `operating system shared library version suffix` is 1.0, this is OK according to the docs.
+
+## Python Installation In Use
+
+Replacing app.wsgi content with:
+
+```python
+import sys
+
+def application(environ, start_response):
+    status = '200 OK'
+
+    output = u''
+    output += u'sys.version = %s\n' % repr(sys.version)
+    output += u'sys.prefix = %s\n' % repr(sys.prefix)
+
+    response_headers = [('Content-type', 'text/plain'),
+                        ('Content-Length', str(len(output)))]
+    start_response(status, response_headers)
+
+    return [output.encode('UTF-8')]
+```
+
+yields: 
+```python
+sys.version = '3.6.6 (default, Jun 28 2018, 04:42:43) \n[GCC 5.4.0 20160609]'\
+sys.prefix = '/usr'
+```
+
+which should produce:
+```python
+sys.version = "'2.6.1 (r261:67515, Feb 11 2010, 00:51:29) \\n[GCC 4.2.1 (Apple Inc. build 5646)]'"
+sys.prefix = '/usr'
+```
+
+which appears to be correct as I was _not_ expecting a Python installation under '/usr/local/'
+
+
+## Embedded Or Daemon Mode
+
+Replacing app.wsgi content with:
+
+```python
+import sys
+
+def application(environ, start_response):
+    status = '200 OK'
+    output = u'mod_wsgi.process_group = %s' % repr(environ['mod_wsgi.process_group'])
+    response_headers = [('Content-type', 'text/plain'),
+                        ('Content-Length', str(len(output)))]
+    start_response(status, response_headers)
+
+    return [output.encode('UTF-8')]
+```
+
+yields: `mod_wsgi.process_group = 'grv-app-deploy'` which is correct.
+
+## Sub Interpreter Being Used
+
+Replacing app.wsgi content with:
+
+```python
+import sys
+
+def application(environ, start_response):
+    status = '200 OK'
+    output = u'mod_wsgi.application_group = %s' % repr(environ['mod_wsgi.application_group'])
+
+    response_headers = [('Content-type', 'text/plain'),
+                        ('Content-Length', str(len(output)))]
+    start_response(status, response_headers)
+
+    return [output.encode('UTF-8')]
+```
+
+yields: `mod_wsgi.application_group = 'ip-172-31-29-84.ec2.internal|'` 
+
+From [here](http://bit.ly/2MbQEOv):
+'If being run in the main interpreter, ie., the first interpreter created by Python, this will output:'
+
+`mod_wsgi.application_group = ''`
+
+'This actually corresponds to the directive:'
+
+`WSGIApplicationGroup %{GLOBAL}`
